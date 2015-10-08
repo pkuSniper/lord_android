@@ -2,16 +2,22 @@ package com.example.lzb.lesshstsecondapp;
 
 import android.util.Log;
 
+import org.apache.http.conn.util.InetAddressUtils;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
+import java.util.Enumeration;
 
 /**
  * Created by lzb on 2015/9/24.
  */
-public class getWeather {
+public class GetWeather {
 
     public static String getWeather(String addressName)
     {
@@ -39,7 +45,7 @@ public class getWeather {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             // 填入apikey到HTTP header
-            connection.setRequestProperty("apikey", "b3744c6bf093093044afe853a0961c3c");
+            connection.setRequestProperty("apikey", "9efeb71f9007d397d479c9d96ad29817");
             try{
                 connection.connect();
             }
@@ -62,5 +68,26 @@ public class getWeather {
         }
         return result;
     }
+    public static String getLocalIpAddress(){
 
+        try{
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf
+                        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()&& InetAddressUtils.isIPv4Address(inetAddress.getHostAddress())) {
+
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        }catch (SocketException e) {
+            // TODO: handle exception
+//            Utils.log("WifiPreference IpAddress---error-" + e.toString());
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

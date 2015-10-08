@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
@@ -38,61 +37,16 @@ import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.json.JSONObject;
 //package ss.pku.weathertest;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.Message;
-import android.provider.Settings;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 
-import android.view.View;
-import android.widget.*;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.util.Log;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import com.example.lzb.lesshstsecondapp.weatherGetFromBaidu;
-
-import static com.example.lzb.lesshstsecondapp.jsonControl.*;
+import static com.example.lzb.lesshstsecondapp.WeatherInfo.*;
 
 public class MainActivity extends Activity {
 
@@ -136,12 +90,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(weatherGetFromBaidu.getLocalIpAddress(), "ip");
-
-
-
-        String strPinyin = cn2pinyin.converterToSpell("李智博");
-        Log.d(strPinyin, "cn2pinyin");
 
         try {
             LocationManager m_location_manager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -273,27 +221,27 @@ public class MainActivity extends Activity {
             // TODO: http request.
             //
 
-            String weatherToShow = getWeather.getWeather(_addressCityName);
+            String weatherToShow = GetWeather.getWeather(_addressCityName);
 
             String latLongString = "";
             try{
-                jsonControl js = new jsonControl(weatherToShow);
-
-                for(jsonControl.DailyForcast day : js.dailyWeatherList){
+                JsonControl js = new JsonControl(weatherToShow);
+                WeatherInfo weatherInfo = js.weatherInfo;
+                for(DailyForcast day : weatherInfo.dailyWeatherList){
                     System.out.println(day.date);
                     Log.d(day.date, "date from baidu");
 
                 }
 
-                latLongString += js.dailyWeatherList.get(0).toString();
-                for(jsonControl.HourlyForcast hour : js.hourlyWeatherList){
+                latLongString += weatherInfo.dailyWeatherList.get(0).toString();
+                for(HourlyForcast hour : weatherInfo.hourlyWeatherList){
                     System.out.println(hour.date);
                     Log.d(hour.date, "date from baidu");
                 }
-                latLongString += js.hourlyWeatherList.get(0).toString();
+                latLongString += weatherInfo.hourlyWeatherList.get(0).toString();
 
-                Log.d("tep is: " + js.nowWeather.tmp, "date from baidu");
-                latLongString += js.nowWeather.toString();
+                Log.d("tep is: " + weatherInfo.nowWeather.tmp, "date from baidu");
+                latLongString += weatherInfo.nowWeather.toString();
             }
             catch (JSONException e) {
                 return;
