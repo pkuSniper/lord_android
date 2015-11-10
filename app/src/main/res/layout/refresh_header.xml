@@ -1,4 +1,4 @@
-<com.example.lzb.lesshstsecondapp.MyRefresh.HeaderView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pku.lesshst.weathershow.MyRefresh.HeaderView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pull_to_refresh_head"
     android:layout_width="fill_parent"
@@ -16,7 +16,7 @@
             android:layout_weight="5"
             >
 
-            <com.example.lzb.lesshstsecondapp.MyRefresh.RotateView
+            <com.pku.lesshst.weathershow.MyRefresh.RotateView
                 android:id="@+id/rotate_view"
                 android:layout_width="50dip"
                 android:layout_height="50dip"
@@ -49,4 +49,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</com.example.lzb.lesshstsecondapp.MyRefresh.HeaderView>
+</com.pku.lesshst.weathershow.MyRefresh.HeaderView>
